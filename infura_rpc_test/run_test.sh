@@ -9,9 +9,6 @@ source ./test/test_eth_getTransaction.sh
 source ./test/test_eth_getTransactionLogs.sh
 source ./test/test_eth_getTransactionReceipt.sh
 
-export infura_url="http://127.0.0.1:26659"
-export rpc_url="http://127.0.0.1:8545"
-
 echo_res(){
     if [ "$2" == "0" ];then
         echo "$1 success"
