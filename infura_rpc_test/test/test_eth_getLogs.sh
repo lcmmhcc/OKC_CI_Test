@@ -24,7 +24,7 @@ run_test_logs(){
 
     if [ $rpc_number != $infura_res ]
     then
-        echo "rpc_response_is_not_equal_to_infura"
+        echo "response_number_not_equal"
         return 1
     fi
 
@@ -33,7 +33,7 @@ run_test_logs(){
 
     if [ $rpc_hash != $infura_hash ]
     then
-        echo "rpc_response_is_not_equal_to_infura"
+        echo "response_hash_not_equal"
         return 1
     fi
 
