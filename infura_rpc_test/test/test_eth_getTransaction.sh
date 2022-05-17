@@ -31,6 +31,7 @@ run_test_tx(){
     then
         require_err "$rpc" "$infura" 
     elif [ "$onErr" == "require_null" ]
+    then
         require_null "$rpc" "$infura" 
     else
         compare_tx_result "$rpc" "$infura"

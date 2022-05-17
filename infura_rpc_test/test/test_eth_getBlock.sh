@@ -12,6 +12,7 @@ run_test_Block(){
     then
         require_err "$rpc" "$infura" "$errCode"
     elif [ "$onErr" == "require_null" ]
+    then
         require_null "$rpc" "$infura" 
     else
         compare_block_result "$rpc" "$infura"
