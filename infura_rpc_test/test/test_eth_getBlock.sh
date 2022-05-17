@@ -4,24 +4,22 @@ run_test_Block(){
     data=$1
     rpc=$(getResponse $rpc_url $data)
     rpc_res=$(echo $rpc | jq '.result')
-    rpc_err=$(echo $rpc | jq '.error')
+    rpc_err=$(echo $rpc | jq '.error|.message')
     
     #echo $rpc_res
     infura=$(getResponse $rpc_url $data | jq '.result')
     infura_res=$(echo $infura | jq '.result')
-    infura_err=$(echo $infura | jq '.error')
+    infura_err=$(echo $infura | jq '.error|.message')
     #echo $infura_res
     
     if [ ! -n $rpc_err ] 
     then
-        $rpc_err_msg=$(echo $rpc_err | jq '.message')
-        echo "rpc_error_$rpc_err_msg" | tr ' ' '_'
+        echo "rpc_error_$rpc_err" | tr ' ' '_'
         return 1
     fi
     if [ ! -n $infura_err ] 
     then
-        $infura_err_msg=$(echo $infura_err | jq '.message')
-        echo "infura_error_$infura_err_msg" | tr ' ' '_'
+        echo "infura_error_$infura_err" | tr ' ' '_'
         return 1
     fi
     if [ -z "$rpc_res" ]
