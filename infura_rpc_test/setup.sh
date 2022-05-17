@@ -1,4 +1,5 @@
 #! /bin/bash
+#set -x
 
 # docker pull mysql/mysql-server
 # docker pull redis
@@ -53,7 +54,7 @@ export txContractStoreBlockHash=$(echo $txContractStoreRes | jq '.blockHash')
 export txContractStoreBlockNum=$(echo $txContractStoreRes | jq '.blockNumber')
 
 txContractStoreReceipt=$(curl -X POST $rpc_url -s -H 'Content-Type: application/json' -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[$txContractStoreHash],\"id\":1}" | jq '.result')
-export topic=$(echo $txContractStoreReceipt | jq '.logs|.topics|.[0]')
+export topic=$(echo $txContractStoreReceipt | jq '.logs|.[0]|.topics|.[0]')
 
 sleep 4
 export toBlockNum=$(curl -X POST $rpc_url -s -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq '.result')
