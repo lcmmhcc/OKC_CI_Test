@@ -1,8 +1,5 @@
 #! /bin/bash
 
-export infura_url="http://127.0.0.1:8080"
-export rpc_url="http://127.0.0.1:8545"
-
 getResponse(){
     url=$1
     content=$2

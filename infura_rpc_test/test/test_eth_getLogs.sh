@@ -1,5 +1,6 @@
 #! /bin/bash
 set +e
+set -x
 
 run_test_logs(){
     data=$1
@@ -18,15 +19,26 @@ run_test_logs(){
         echo "infura_response_is_nil"
         return 1
     fi
+    rpc_number=$(echo $rpc_res | jq '.number')
+    infura_number=$(echo $infura_res | jq '.number')
 
-    if [ $rpc_res == $infura_res ]
+    if [ $rpc_number != $infura_res ]
     then
-        echo "success"
-        return 0
-    else
         echo "rpc_response_is_not_equal_to_infura"
         return 1
     fi
+
+    rpc_hash=$(echo $rpc_res | jq '.hash')
+    infura_hash=$(echo $infura_res | jq '.hash')
+
+    if [ $rpc_hash != $infura_hash ]
+    then
+        echo "rpc_response_is_not_equal_to_infura"
+        return 1
+    fi
+
+    echo "success"
+    return 0
 }
 
 #echo "Test_eth_getLogs"
