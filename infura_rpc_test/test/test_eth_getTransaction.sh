@@ -22,14 +22,30 @@
 # }
 run_test_tx(){
     data=$1
+    onErr=$2
+
     rpc=$(getResponse $rpc_url $data)
+    infura=$(getResponse $infura_url $data)
+
+    if [ "$onErr" == "require_err" ]
+    then
+        require_err $rpc $infura
+    else
+        compare_tx_result $rpc $infura
+    fi
+}
+
+compare_tx_result(){
+    rpc=$1
+    infura=$2
+
     rpc_res=$(echo $rpc | jq '.result')
     rpc_err=$(echo $rpc | jq '.error|.message')
 
-    infura=$(getResponse $infura_url $data | jq '.result')
     infura_res=$(echo $infura | jq '.result')
     infura_err=$(echo $infura | jq '.error|.message')
     
+
     if [ "$rpc_err" != null ] 
     then
         echo "rpc_error_$rpc_err" | tr ' ' '_'
@@ -107,12 +123,7 @@ run_test_tx(){
 
     echo "success"
     return 0
-}
 
-test_eth_getTransactionbyHash(){
-    #eth_getLogs
-    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByHash\",\"params\":[$txHash],\"id\":1}"
-    run_test_tx $data
 }
 
 test_eth_getTransactionbyBlockNumberAndIndex(){
@@ -121,9 +132,20 @@ test_eth_getTransactionbyBlockNumberAndIndex(){
     run_test_tx $data
 }
 
+test_eth_getTransactionbyBlockNumberAndIndex_errBlockNum(){
+    #eth_getLogs
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockNumberAndIndex\",\"params\":[\"0xffffffffff\",\"0x0\"],\"id\":1}"
+    run_test_tx $data "require_err"
+}
+
 test_eth_getTransactionbyBlockHashAndIndex(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockHashAndIndex\",\"params\":[$txBlockHash,\"0x0\"],\"id\":1}"
     run_test_tx $data
 }
 
+test_eth_getTransactionbyBlockHashAndIndex_errBlockHash(){
+    #eth_getLogs
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockHashAndIndex\",\"params\":[\"0xfffffffffffdb68150f1cc8e416d9a712d1b114daa02eeab5ff6f69321b1b08c\",\"0x0\"],\"id\":1}"
+    run_test_tx $data "require_err"
+}

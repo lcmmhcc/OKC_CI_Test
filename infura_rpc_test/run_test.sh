@@ -2,7 +2,7 @@
 set +e
 
 source setup.sh
-source ./test/getResponse.sh
+source ./test/common.sh
 source ./test/test_eth_getBlock.sh
 source ./test/test_eth_getCode.sh
 source ./test/test_eth_getLogs.sh
