@@ -26,13 +26,13 @@ echo_res(){
 }
 
 #eth_getLogs
-err=$(test_eth_getLogs)
-echo_res "test_eth_getLogs" $? $err
+err=$(test_eth_getBlockByNumber)
+echo_res "test_eth_getBlockByNumber" $? $err
 
-#err=$(test_eth_getLogs_byBlockHash)
+#err=$(test_eth_getBlockByHash)
 #echo_res "test_eth_getLogs_byBlockHash" $? $err
 
-#err=$(test_eth_getLogs_byAddress)
+#err=$(test_eth_getBlockByHash_fulltx)
 #echo_res "test_eth_getLogs_byAddress" $? $err
 
 
