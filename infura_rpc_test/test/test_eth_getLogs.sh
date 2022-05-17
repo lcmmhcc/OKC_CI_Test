@@ -22,10 +22,10 @@ compare_logs(){
     rpc=$1
     infura=$2
 
-    rpc_res=$(echo $rpc | jq '.result')
+    rpc_res=$(echo $rpc | jq '.result|.[0]')
     rpc_err=$(echo $rpc | jq '.error|.message')
 
-    infura_res=$(echo $infura | jq '.result')
+    infura_res=$(echo $infura | jq '.result|.[0]')
     infura_err=$(echo $infura | jq '.error|.message')
     
 
