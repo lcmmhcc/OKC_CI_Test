@@ -131,23 +131,23 @@ compare_tx_result(){
 test_eth_getTransactionbyBlockNumberAndIndex(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockNumberAndIndex\",\"params\":[$txBlockNum,\"0x0\"],\"id\":1}"
-    run_test_tx $data
+    run_test_tx "$data"
 }
 
 test_eth_getTransactionbyBlockNumberAndIndex_errBlockNum(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockNumberAndIndex\",\"params\":[\"0xffffffffff\",\"0x0\"],\"id\":1}"
-    run_test_tx $data "require_null"
+    run_test_tx "$data" "require_null"
 }
 
 test_eth_getTransactionbyBlockHashAndIndex(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockHashAndIndex\",\"params\":[$txBlockHash,\"0x0\"],\"id\":1}"
-    run_test_tx $data
+    run_test_tx "$data"
 }
 
 test_eth_getTransactionbyBlockHashAndIndex_errBlockHash(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockHashAndIndex\",\"params\":[\"0xfffffffffffdb68150f1cc8e416d9a712d1b114daa02eeab5ff6f69321b1b08c\",\"0x0\"],\"id\":1}"
-    run_test_tx $data "require_null"
+    run_test_tx "$data" "require_null"
 }

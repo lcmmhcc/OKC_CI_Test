@@ -92,29 +92,29 @@ compare_logs(){
 
 test_eth_getLogs_byBlockHash(){
     #eth_getLogs
-    data="{\"method\":\"eth_getLogs\",\"params\":[{\"blockhash\": $txContractStoreBlockHash}],\"id\":1,\"jsonrpc\":\"2.0\"}"
-    run_test_logs $data
+    data="{\"method\":\"eth_getLogs\",\"params\":[{\"blockhash\":$txContractStoreBlockHash}],\"id\":1,\"jsonrpc\":\"2.0\"}"
+    run_test_logs "$data"
     return $?
 }
 
 test_eth_getLogs_byAddress(){
     #eth_getLogs
     data="{\"method\":\"eth_getLogs\",\"params\":[{\"address\":$contractAddr}],\"id\":1,\"jsonrpc\":\"2.0\"}"
-    run_test_logs $data
+    run_test_logs "$data"
     return $?
 }
 
 test_eth_getLogs_byFromTo(){
     #eth_getLogs
     data="{\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\": $fromBlockNum,\"toBlock\": $toBlockNum}],\"id\":1,\"jsonrpc\":\"2.0\"}"
-    run_test_logs $data
+    run_test_logs "$data"
     return $?
 }
 
 test_eth_getLogs_byTopic(){
     #eth_getLogs
     data="{\"method\":\"eth_getLogs\",\"params\":[{\"topic\":$topic}],\"id\":1,\"jsonrpc\":\"2.0\"}"
-    run_test_logs $data
+    run_test_logs "$data"
     return $?
 }
 

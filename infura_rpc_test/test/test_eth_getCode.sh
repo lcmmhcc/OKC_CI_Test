@@ -48,39 +48,9 @@ compare_code(){
         return 1
     fi
 
-    rpc_res_tx_hash=$(echo $rpc_res | jq '.transactionHash')
-    infura_res_tx_hash=$(echo $infura_res | jq '.transactionHash')
-
-    if [ $rpc_res_tx_hash != $infura_res_tx_hash ]
+    if [ $rpc_res != $infura_res ]
     then
-        echo "response_tx_hash_is_not_equal"
-        return 1
-    fi
-
-    rpc_res_tx_block_hash=$(echo $rpc_res | jq '.blockHash')
-    infura_res_tx_block_hash=$(echo $infura_res | jq '.blockHash')
-
-    if [ $rpc_res_tx_block_hash != $infura_res_tx_block_hash ]
-    then
-        echo "response_tx_block_hash_is_not_equal"
-        return 1
-    fi
-
-    rpc_res_tx_block_Num=$(echo $rpc_res | jq '.blockNumber')
-    infura_res_tx_block_Num=$(echo $infura_res | jq '.blockNumber')
-
-    if [ $rpc_res_tx_block_Num != $infura_res_tx_block_Num ]
-    then
-        echo "response_tx_block_Num_is_not_equal"
-        return 1
-    fi
-
-    rpc_res_tx_address=$(echo $rpc_res | jq '.address')
-    infura_res_tx_address=$(echo $infura_res | jq '.address')
-
-    if [ $rpc_res_tx_address != $infura_res_tx_address ]
-    then
-        echo "response_tx_address_is_not_equal"
+        echo "response_code_is_not_equal"
         return 1
     fi
 
@@ -91,11 +61,11 @@ compare_code(){
 test_eth_getCode_byBlockNum(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[$contractAddr,\"0x0\"],\"id\":1}"
-    run_test_Code $data
+    run_test_Code "$data"
 }
 
 test_eth_getCode_byBlockHash(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[$contractAddr, $txContractDeployBlockHash],\"id\":1}" 
-    run_test_Code $data
+    run_test_Code "$data"
 }

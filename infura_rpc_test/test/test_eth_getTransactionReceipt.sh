@@ -127,11 +127,11 @@ compare_txRecp_result(){
 test_eth_getTransactionReceipt(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[$txHash],\"id\":1}"
-    run_test_txRecp $data
+    run_test_txRecp "$data"
 }
 
 test_eth_getTransactionReceipt_errTxHash(){
     #eth_getLogs
     data='{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0xffffffffffffacc65ba9ee658b04851eb6f4474a33ff95b6d7421ca008f1d22b"],"id":1}'
-    run_test_txRecp $data "require_null"
+    run_test_txRecp "$data" "require_null"
 }
