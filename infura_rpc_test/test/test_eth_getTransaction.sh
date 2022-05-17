@@ -25,30 +25,29 @@ run_test_tx(){
     rpc=$(getResponse $rpc_url $data)
     rpc_res=$(echo $rpc | jq '.result')
     rpc_err=$(echo $rpc | jq '.error|.message')
-    #echo $rpc_res
+
     infura=$(getResponse $infura_url $data | jq '.result')
     infura_res=$(echo $infura | jq '.result')
     infura_err=$(echo $infura | jq '.error|.message')
-    #echo $infura_res
     
-   if [ $rpc_err != null ] 
+    if [ "$rpc_err" != null ] 
     then
         echo "rpc_error_$rpc_err" | tr ' ' '_'
         return 1
     fi
-    if [ $infura_err != null ] 
+    if [ "$infura_err" != null ] 
     then
         echo "infura_error_$infura_err" | tr ' ' '_'
         return 1
     fi
-    if [ $rpc_res == null ]
+    if [ "$rpc_res" == null ] || [ -z "$rpc_res" ] || [ -n "$rpc_res" ]
     then
-        echo "rpc_response_is_nil"
+        echo "rpc_response_is_null"
         return 1
     fi
-    if [ $infura_res == null ]
+    if [ "$infura_res" == null ] || [ -z "$infura_res" ] || [ -n "$infura_res" ]
     then
-        echo "infura_response_is_nil"
+        echo "infura_response_is_null"
         return 1
     fi
 
