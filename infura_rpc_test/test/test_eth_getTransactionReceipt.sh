@@ -30,6 +30,6 @@ run_test_txRecp(){
 
 test_eth_getTransactionReceipt(){
     #eth_getLogs
-    data='{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params": ["0x09929d9c2fdfacc65ba9ee658b04851eb6f4474a33ff95b6d7421ca008f1d22b"],"id":1}'
+    data='{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["0x09929d9c2fdfacc65ba9ee658b04851eb6f4474a33ff95b6d7421ca008f1d22b"],"id":1}'
     run_test_txRecp $data
 }
