@@ -29,13 +29,13 @@ run_test_tx(){
 
 test_eth_getTransactionbyBlockNumberAndIndex(){
     #eth_getLogs
-    data='{"jsonrpc":"2.0","method":"eth_getTransactionByBlockNumberAndIndex","params":["0xe","0x0"],"id":1}' 
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockNumberAndIndex\",\"params\":[$txBlockNum,\"0x0\"],\"id\":1}"
     run_test_tx $data
 }
 
 test_eth_getTransactionbyBlockHashAndIndex(){
     #eth_getLogs
-    data='{"jsonrpc":"2.0","method":"eth_getTransactionByBlockHashAndIndex","params":["0xa84fc124c4209782fa5598b07daf70a1805241fb9a0e3635d13fa49fd74ca01c","0x1"],"id":1}' 
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockHashAndIndex\",\"params\":[$txBlockHash,\"0x0\"],\"id\":1}"
     run_test_tx $data
 }
 

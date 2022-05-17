@@ -60,11 +60,11 @@ echo_res "test_eth_getLogs_byAddress" $? $err
 
 # #eth_gettransaction
 
-# err=$(test_eth_getTransactionbyBlockNumberAndIndex)
-# echo_res "test_eth_getLogs_byAddress" $? $err
+err=$(test_eth_getTransactionbyBlockNumberAndIndex)
+echo_res "test_eth_getLogs_byAddress" $? $err
 
-# err=$(test_eth_getTransactionbyBlockHashAndIndex)
-# echo_res "test_eth_getLogs_byAddress" $? $err
+err=$(test_eth_getTransactionbyBlockHashAndIndex)
+echo_res "test_eth_getLogs_byAddress" $? $err
 
 # #eth_getTransactionLogs
 
