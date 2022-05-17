@@ -31,22 +31,22 @@ run_test_tx(){
     infura_err=$(echo $infura | jq '.error|.message')
     #echo $infura_res
     
-   if [ ! -n "$rpc_err" ] 
+   if [ $rpc_err != null ] 
     then
         echo "rpc_error_$rpc_err" | tr ' ' '_'
         return 1
     fi
-    if [ ! -n "$infura_err" ] 
+    if [ $infura_err != null ] 
     then
         echo "infura_error_$infura_err" | tr ' ' '_'
         return 1
     fi
-    if [ -z "$rpc_res" ]
+    if [ $rpc_res == null ]
     then
         echo "rpc_response_is_nil"
         return 1
     fi
-    if [ -z "$infura_res" ]
+    if [ $infura_res == null ]
     then
         echo "infura_response_is_nil"
         return 1
@@ -110,6 +110,11 @@ run_test_tx(){
     return 0
 }
 
+test_eth_getTransactionbyHash(){
+    #eth_getLogs
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByHash\",\"params\":[$txHash],\"id\":1}"
+    run_test_tx $data
+}
 
 test_eth_getTransactionbyBlockNumberAndIndex(){
     #eth_getLogs
