@@ -1,6 +1,7 @@
 #! /bin/bash
 set +e
 
+source setup.sh
 source ./test/getResponse.sh
 source ./test/test_eth_getBlock.sh
 source ./test/test_eth_getCode.sh
