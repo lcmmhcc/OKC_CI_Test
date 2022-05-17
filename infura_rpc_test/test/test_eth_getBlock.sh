@@ -35,14 +35,26 @@ run_test_Block(){
         return 1
     fi
 
-    if [ $rpc_res == $infura_res ]
+    rpc_res_block_num=$(echo $rpc_res | jq '.number')
+    infura_res_block_num=$(echo $rpc_res | jq '.number')
+
+    if [ $rpc_res_block_num != $infura_res_block_num ]
     then
-        echo "success"
-        return 0
-    else
-        echo "rpc_response_is_not_equal_to_infura"
+        echo "response_block_num_is_not_equal"
         return 1
     fi
+
+    rpc_res_block_hash=$(echo $rpc_res | jq '.hash')
+    infura_res_block_hash=$(echo $rpc_res | jq '.hash')
+
+    if [ $rpc_res_block_hash != $infura_res_block_hash ]
+    then
+        echo "response_block_hash_is_not_equal"
+        return 1
+    fi
+    
+    echo "success"
+    return 0
 }
 
 test_eth_getBlockByNumber(){
