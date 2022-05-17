@@ -10,9 +10,9 @@ run_test_Block(){
 
     if [ "$onErr" == "require_err" ]
     then
-        require_err $rpc $infura $errCode
+        require_err "$rpc" "$infura" "$errCode"
     else
-        compare_block_result $rpc $infura
+        compare_block_result "$rpc" "$infura"
     fi
 }
 

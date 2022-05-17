@@ -29,9 +29,9 @@ run_test_tx(){
 
     if [ "$onErr" == "require_err" ]
     then
-        require_err $rpc $infura
+        require_err "$rpc" "$infura" 
     else
-        compare_tx_result $rpc $infura
+        compare_tx_result "$rpc" "$infura"
     fi
 }
 

@@ -10,9 +10,9 @@ run_test_txRecp(){
 
     if [ "$onErr" == "require_err" ]
     then
-        require_err $rpc $infura $errCode
+        require_err "$rpc" "$infura" "$errCode"
     else
-        compare_txRecp_result $rpc $infura
+        compare_txRecp_result "$rpc" "$infura"
     fi
 }
 # {

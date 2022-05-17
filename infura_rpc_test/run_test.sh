@@ -33,6 +33,8 @@ echo_res "test_eth_getLogs_byBlockHash" $? $err
 err=$(test_eth_getBlockByHash_fulltx)
 echo_res "test_eth_getLogs_byAddress" $? $err
 
+err=$(test_eth_getBlockByHash_errBlockHash)
+echo_res "test_eth_getBlockByHash_errBlockHash" $? $err
 
 #eth_getCode
 
@@ -63,6 +65,12 @@ echo_res "test_eth_getTransactionbyBlockNumberAndIndex" $? $err
 
 err=$(test_eth_getTransactionbyBlockHashAndIndex)
 echo_res "test_eth_getTransactionbyBlockHashAndIndex" $? $err
+
+err=$(test_eth_getTransactionbyBlockNumberAndIndex_errBlockNum)
+echo_res "test_eth_getTransactionbyBlockNumberAndIndex_errBlockNum" $? $err
+
+err=$(test_eth_getTransactionbyBlockHashAndIndex_errBlockHash)
+echo_res "test_eth_getTransactionbyBlockHashAndIndex_errBlockHash" $? $err
 
 # #eth_getTransactionLogs
 
