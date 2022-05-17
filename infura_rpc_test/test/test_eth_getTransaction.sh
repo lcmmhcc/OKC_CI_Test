@@ -30,6 +30,8 @@ run_test_tx(){
     if [ "$onErr" == "require_err" ]
     then
         require_err "$rpc" "$infura" 
+    elif [ "$onErr" == "require_null" ]
+        require_null "$rpc" "$infura" 
     else
         compare_tx_result "$rpc" "$infura"
     fi
@@ -135,7 +137,7 @@ test_eth_getTransactionbyBlockNumberAndIndex(){
 test_eth_getTransactionbyBlockNumberAndIndex_errBlockNum(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockNumberAndIndex\",\"params\":[\"0xffffffffff\",\"0x0\"],\"id\":1}"
-    run_test_tx $data "require_err"
+    run_test_tx $data "require_null"
 }
 
 test_eth_getTransactionbyBlockHashAndIndex(){
@@ -147,5 +149,5 @@ test_eth_getTransactionbyBlockHashAndIndex(){
 test_eth_getTransactionbyBlockHashAndIndex_errBlockHash(){
     #eth_getLogs
     data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByBlockHashAndIndex\",\"params\":[\"0xfffffffffffdb68150f1cc8e416d9a712d1b114daa02eeab5ff6f69321b1b08c\",\"0x0\"],\"id\":1}"
-    run_test_tx $data "require_err"
+    run_test_tx $data "require_null"
 }

@@ -6,7 +6,26 @@ getResponse(){
     resp=$(curl -X POST $url -H "Content-Type: application/json" -d "$content" -s)
     echo "$resp"
 }
+require_null(){
+    rpc=$1
+    infura=$2
 
+    rpc_res=$(echo $rpc | jq '.error|.result')
+    infura_res=$(echo $infura | jq '.error|.result')
+
+    if [ "$rpc_res" != null ]
+    then
+        echo "rpc_response_is_not_null"
+        return 1
+    fi
+    if [ "$infura_res" != null ]
+    then
+        echo "infura_response_is_not_null"
+        return 1
+    fi
+    echo "success"
+    return 0 
+}
 require_err(){
     rpc=$1
     infura=$2
