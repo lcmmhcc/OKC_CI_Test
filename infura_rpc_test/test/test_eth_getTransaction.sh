@@ -56,12 +56,12 @@ compare_tx_result(){
         echo "infura_error_$infura_err" | tr ' ' '_'
         return 1
     fi
-    if [ "$rpc_res" == null ] || [ -z "$rpc_res" ] || [ -n "$rpc_res" ]
+    if [ "$rpc_res" == null ] || [ "$rpc_res" == "" ]
     then
         echo "rpc_response_is_null"
         return 1
     fi
-    if [ "$infura_res" == null ] || [ -z "$infura_res" ] || [ -n "$infura_res" ]
+    if [ "$infura_res" == null ] || [ "$infura_res" == "" ]
     then
         echo "infura_response_is_null"
         return 1
