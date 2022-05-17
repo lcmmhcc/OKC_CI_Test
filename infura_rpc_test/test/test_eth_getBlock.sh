@@ -5,8 +5,8 @@ run_test_Block(){
     onErr=$2
     errCode=$3
 
-    rpc=$(getResponse $rpc_url $data)
-    infura=$(getResponse $infura_url $data)
+    rpc=$(getResponse "$rpc_url" "$data")
+    infura=$(getResponse "$infura_url" "$data")
 
     if [ "$onErr" == "require_err" ]
     then

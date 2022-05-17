@@ -24,8 +24,8 @@ run_test_tx(){
     data=$1
     onErr=$2
 
-    rpc=$(getResponse $rpc_url $data)
-    infura=$(getResponse $infura_url $data)
+    rpc=$(getResponse "$rpc_url" "$data")
+    infura=$(getResponse "$infura_url" "$data")
 
     if [ "$onErr" == "require_err" ]
     then

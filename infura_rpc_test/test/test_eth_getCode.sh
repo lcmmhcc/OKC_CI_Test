@@ -3,8 +3,8 @@ run_test_Code(){
     data=$1
     onErr=$2
 
-    rpc=$(getResponse $rpc_url $data)
-    infura=$(getResponse $infura_url $data)
+    rpc=$(getResponse "$rpc_url" "$data")
+    infura=$(getResponse "$infura_url" "$data")
 
     if [ "$onErr" == "require_err" ]
     then
@@ -66,6 +66,6 @@ test_eth_getCode_byBlockNum(){
 
 test_eth_getCode_byBlockHash(){
     #eth_getLogs
-    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[$contractAddr, $txContractDeployBlockHash],\"id\":1}" 
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[$contractAddr,$txContractDeployBlockHash],\"id\":1}" 
     run_test_Code "$data"
 }
