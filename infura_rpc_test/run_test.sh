@@ -22,6 +22,8 @@ echo_res(){
     fi
 }
 
+./setup.sh
+
 #eth_getLogs
 err=$(test_eth_getBlockByNumber)
 echo_res "test_eth_getBlockByNumber" $? $err
