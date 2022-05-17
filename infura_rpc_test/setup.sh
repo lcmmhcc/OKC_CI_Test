@@ -43,7 +43,6 @@ export txContractDeployBlockHash=$(echo $txContractDeployRes | jq '.blockHash')
 export txContractDeployBlockNum=$(echo $txContractDeployRes | jq '.blockNumber')
 txContractReceipt=$(curl -X POST $rpc_url -s -H 'Content-Type: application/json' -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[$txContractDeployHash],\"id\":1}" | jq '.result')
 export contractAddr=$(echo $txContractReceipt | jq '.contractAddress')
-export topic=$(echo $txContractReceipt | jq '.logs|.topics|.[0]')
 
 #nonce = 3
 export txContractStoreHash=$(curl -X POST $rpc_url -s -H 'Content-Type: application/json' -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\"from\":\"0xbbE4733d85bc2b90682147779DA49caB38C0aA1F\",\"to\":$contractAddr,\"input\":\"0xc03c30030000000000000000000000000000000000000000000000000000000000000001\"}],\"id\":1}" | jq '.result')
@@ -52,6 +51,9 @@ sleep 4
 txContractStoreRes=$(curl -X POST $rpc_url -s -H 'Content-Type: application/json' -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionByHash\",\"params\":[$txContractStoreHash],\"id\":1}" | jq '.result')
 export txContractStoreBlockHash=$(echo $txContractStoreRes | jq '.blockHash')
 export txContractStoreBlockNum=$(echo $txContractStoreRes | jq '.blockNumber')
+
+txContractStoreReceipt=$(curl -X POST $rpc_url -s -H 'Content-Type: application/json' -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[$txContractStoreHash],\"id\":1}" | jq '.result')
+export topic=$(echo $txContractStoreReceipt | jq '.logs|.topics|.[0]')
 
 sleep 4
 export toBlockNum=$(curl -X POST $rpc_url -s -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq '.result')
