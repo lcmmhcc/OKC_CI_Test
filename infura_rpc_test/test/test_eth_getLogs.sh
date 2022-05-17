@@ -113,7 +113,7 @@ test_eth_getLogs_byFromTo(){
 
 test_eth_getLogs_byTopic(){
     #eth_getLogs
-    data="{\"method\":\"eth_getLogs\",\"params\":[{\"topic\":$topic}],\"id\":1,\"jsonrpc\":\"2.0\"}"
+    data="{\"method\":\"eth_getLogs\",\"params\":[{\"topics\":[$topic]}],\"id\":1,\"jsonrpc\":\"2.0\"}"
     run_test_logs "$data"
     return $?
 }
