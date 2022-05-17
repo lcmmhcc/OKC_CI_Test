@@ -7,17 +7,17 @@ run_test_Block(){
     rpc_err=$(echo $rpc | jq '.error|.message')
     
     #echo $rpc_res
-    infura=$(getResponse $rpc_url $data | jq '.result')
+    infura=$(getResponse $infura_url $data | jq '.result')
     infura_res=$(echo $infura | jq '.result')
     infura_err=$(echo $infura | jq '.error|.message')
     #echo $infura_res
     
-    if [ ! -n $rpc_err ] 
+    if [ ! -n "$rpc_err" ] 
     then
         echo "rpc_error_$rpc_err" | tr ' ' '_'
         return 1
     fi
-    if [ ! -n $infura_err ] 
+    if [ ! -n "$infura_err" ] 
     then
         echo "infura_error_$infura_err" | tr ' ' '_'
         return 1
@@ -57,7 +57,7 @@ run_test_Block(){
 
 test_eth_getBlockByNumber(){
     #eth_getLogs
-    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[$txBlockHash,false],\"id\":1}"
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[$txBlockNum,false],\"id\":1}"
     run_test_Block $data
 }
 
