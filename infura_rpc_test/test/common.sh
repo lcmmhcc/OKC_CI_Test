@@ -15,12 +15,12 @@ require_err(){
     rpc_err_code=$(echo $rpc | jq '.error|.code')
     infura_err_code=$(echo $infura | jq '.error|.code')
 
-    if [ "$rpc_err_code" == null ] || [ -z "$rpc_err_code" ] || [ -n "$rpc_err_code" ]
+    if [ "$rpc_err_code" == null ] || [ "$rpc_err_code" == "" ] 
     then
         echo "rpc_err_is_null"
         return 1
     fi
-    if [ "$infura_err_code" == null ] || [ -z "$infura_err_code" ] || [ -n "$infura_err_code" ]
+    if [ "$infura_err_code" == null ] || [ "$infura_err_code" == "" ]
     then
         echo "infura_err_is_null"
         return 1
