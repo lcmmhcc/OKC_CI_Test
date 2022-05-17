@@ -1,40 +1,101 @@
 #! /bin/bash
 run_test_Code(){
     data=$1
-    rpc_res=$(getResponse $rpc_url $data | jq '.result')
-    #echo $rpc_res
-    infura_res=$(getResponse $rpc_url $data | jq '.result')
-    #echo $infura_res
-    
-    if [ -z "$rpc_res" ]
+    onErr=$2
+
+    rpc=$(getResponse $rpc_url $data)
+    infura=$(getResponse $infura_url $data)
+
+    if [ "$onErr" == "require_err" ]
     then
-        echo "rpc_response_is_nil"
+        require_err "$rpc" "$infura" 
+    elif [ "$onErr" == "require_null" ]
+    then
+        require_null "$rpc" "$infura" 
+    else
+        compare_code "$rpc" "$infura"
+    fi
+}
+compare_code(){
+    rpc=$1
+    infura=$2
+
+    rpc_res=$(echo $rpc | jq '.result')
+    rpc_err=$(echo $rpc | jq '.error|.message')
+
+    infura_res=$(echo $infura | jq '.result')
+    infura_err=$(echo $infura | jq '.error|.message')
+    
+
+    if [ "$rpc_err" != null ] 
+    then
+        echo "rpc_error_$rpc_err" | tr ' ' '_'
         return 1
     fi
-    if [ -z "$infura_res" ]
+    if [ "$infura_err" != null ] 
     then
-        echo "infura_response_is_nil"
+        echo "infura_error_$infura_err" | tr ' ' '_'
+        return 1
+    fi
+    if [ "$rpc_res" == null ] || [ "$rpc_res" == "" ]
+    then
+        echo "rpc_response_is_null"
+        return 1
+    fi
+    if [ "$infura_res" == null ] || [ "$infura_res" == "" ]
+    then
+        echo "infura_response_is_null"
         return 1
     fi
 
-    if [ $rpc_res == $infura_res ]
+    rpc_res_tx_hash=$(echo $rpc_res | jq '.transactionHash')
+    infura_res_tx_hash=$(echo $infura_res | jq '.transactionHash')
+
+    if [ $rpc_res_tx_hash != $infura_res_tx_hash ]
     then
-        echo "success"
-        return 0
-    else
-        echo "rpc_response_is_not_equal_to_infura"
+        echo "response_tx_hash_is_not_equal"
         return 1
     fi
+
+    rpc_res_tx_block_hash=$(echo $rpc_res | jq '.blockHash')
+    infura_res_tx_block_hash=$(echo $infura_res | jq '.blockHash')
+
+    if [ $rpc_res_tx_block_hash != $infura_res_tx_block_hash ]
+    then
+        echo "response_tx_block_hash_is_not_equal"
+        return 1
+    fi
+
+    rpc_res_tx_block_Num=$(echo $rpc_res | jq '.blockNumber')
+    infura_res_tx_block_Num=$(echo $infura_res | jq '.blockNumber')
+
+    if [ $rpc_res_tx_block_Num != $infura_res_tx_block_Num ]
+    then
+        echo "response_tx_block_Num_is_not_equal"
+        return 1
+    fi
+
+    rpc_res_tx_address=$(echo $rpc_res | jq '.address')
+    infura_res_tx_address=$(echo $infura_res | jq '.address')
+
+    if [ $rpc_res_tx_address != $infura_res_tx_address ]
+    then
+        echo "response_tx_address_is_not_equal"
+        return 1
+    fi
+
+    echo "success"
+    return 0
 }
 
 test_eth_getCode_byBlockNum(){
     #eth_getLogs
-    data='{"jsonrpc":"2.0","method":"eth_getCode","params":["0x45dD91b0289E60D89Cec94dF0Aac3a2f539c514b", "0x0"],"id":1}'
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[$contractAddr,\"0x0\"],\"id\":1}"
     run_test_Code $data
 }
 
 test_eth_getCode_byBlockHash(){
     #eth_getLogs
-    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[\"0x45dD91b0289E60D89Cec94dF0Aac3a2f539c514a\", \"0x9872a49f5d49e9c2b938a33015250a2059ce9d150243bca74a1f0b884222c162\"],\"id\":1}" 
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getCode\",\"params\":[$contractAddr, $txContractDeployBlockHash],\"id\":1}" 
     run_test_Code $data
 }

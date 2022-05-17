@@ -52,3 +52,16 @@ require_err(){
     echo "success"
     return 0
 }
+
+echo_res(){
+    if [ "$2" == "0" ];then
+        echo "$1 success"
+    else
+         echo "$1 failed"
+    fi
+
+    if [ "$3" != "success" ]
+    then 
+        echo "err : $3"
+    fi
+}

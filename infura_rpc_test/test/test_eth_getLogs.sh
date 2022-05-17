@@ -3,36 +3,86 @@ set +e
 
 run_test_logs(){
     data=$1
-    rpc_res=$(getResponse $rpc_url $data | jq '.result')
-    #echo $rpc_res
-    infura_res=$(getResponse $rpc_url $data | jq '.result')
-    #echo $infura_res
+    onErr=$2
+
+    rpc=$(getResponse $rpc_url $data)
+    infura=$(getResponse $infura_url $data)
+
+    if [ "$onErr" == "require_err" ]
+    then
+        require_err "$rpc" "$infura" 
+    elif [ "$onErr" == "require_null" ]
+    then
+        require_null "$rpc" "$infura" 
+    else
+        compare_logs "$rpc" "$infura"
+    fi
+}
+compare_logs(){
+    rpc=$1
+    infura=$2
+
+    rpc_res=$(echo $rpc | jq '.result')
+    rpc_err=$(echo $rpc | jq '.error|.message')
+
+    infura_res=$(echo $infura | jq '.result')
+    infura_err=$(echo $infura | jq '.error|.message')
     
-    if [ -z "$rpc_res" ]
+
+    if [ "$rpc_err" != null ] 
     then
-        echo "rpc_response_is_nil"
+        echo "rpc_error_$rpc_err" | tr ' ' '_'
         return 1
     fi
-    if [ -z "$infura_res" ]
+    if [ "$infura_err" != null ] 
     then
-        echo "infura_response_is_nil"
+        echo "infura_error_$infura_err" | tr ' ' '_'
         return 1
     fi
-    rpc_number=$(echo $rpc_res | jq '.number')
-    infura_number=$(echo $infura_res | jq '.number')
-
-    if [ $rpc_number != $infura_res ]
+    if [ "$rpc_res" == null ] || [ "$rpc_res" == "" ]
     then
-        echo "response_number_not_equal"
+        echo "rpc_response_is_null"
+        return 1
+    fi
+    if [ "$infura_res" == null ] || [ "$infura_res" == "" ]
+    then
+        echo "infura_response_is_null"
         return 1
     fi
 
-    rpc_hash=$(echo $rpc_res | jq '.hash')
-    infura_hash=$(echo $infura_res | jq '.hash')
+    rpc_res_tx_hash=$(echo $rpc_res | jq '.transactionHash')
+    infura_res_tx_hash=$(echo $infura_res | jq '.transactionHash')
 
-    if [ $rpc_hash != $infura_hash ]
+    if [ $rpc_res_tx_hash != $infura_res_tx_hash ]
     then
-        echo "response_hash_not_equal"
+        echo "response_tx_hash_is_not_equal"
+        return 1
+    fi
+
+    rpc_res_tx_block_hash=$(echo $rpc_res | jq '.blockHash')
+    infura_res_tx_block_hash=$(echo $infura_res | jq '.blockHash')
+
+    if [ $rpc_res_tx_block_hash != $infura_res_tx_block_hash ]
+    then
+        echo "response_tx_block_hash_is_not_equal"
+        return 1
+    fi
+
+    rpc_res_tx_block_Num=$(echo $rpc_res | jq '.blockNumber')
+    infura_res_tx_block_Num=$(echo $infura_res | jq '.blockNumber')
+
+    if [ $rpc_res_tx_block_Num != $infura_res_tx_block_Num ]
+    then
+        echo "response_tx_block_Num_is_not_equal"
+        return 1
+    fi
+
+    rpc_res_tx_address=$(echo $rpc_res | jq '.address')
+    infura_res_tx_address=$(echo $infura_res | jq '.address')
+
+    if [ $rpc_res_tx_address != $infura_res_tx_address ]
+    then
+        echo "response_tx_address_is_not_equal"
         return 1
     fi
 
@@ -40,30 +90,30 @@ run_test_logs(){
     return 0
 }
 
-#echo "Test_eth_getLogs"
-test_eth_getLogs(){
-    #eth_getLogs
-    data='{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x2",false],"id":1}'
-    run_test_logs $data
-}
-
 test_eth_getLogs_byBlockHash(){
     #eth_getLogs
-    data='{"method":"eth_getLogs","params":[{"blockhash": "0xb84fc124c4209782fa5598b07daf70a1805241fb9a0e3635d13fa49fd74ca01c"}],"id":1,"jsonrpc":"2.0"}'
+    data="{\"method\":\"eth_getLogs\",\"params\":[{\"blockhash\": $txContractStoreBlockHash}],\"id\":1,\"jsonrpc\":\"2.0\"}"
     run_test_logs $data
     return $?
 }
 
 test_eth_getLogs_byAddress(){
     #eth_getLogs
-    data='{"method":"eth_getLogs","params":[{"address": "0x45dD91b0289E60D89Cec94dF0Aac3a2f539c514a"}],"id":1,"jsonrpc":"2.0"}'
+    data="{\"method\":\"eth_getLogs\",\"params\":[{\"address\":$contractAddr}],\"id\":1,\"jsonrpc\":\"2.0\"}"
     run_test_logs $data
     return $?
 }
 
-test_eth_getLogs_byAddress_fromto(){
+test_eth_getLogs_byFromTo(){
     #eth_getLogs
-    data='{"method":"eth_getLogs","params":[{"address": "0x45dD91b0289E60D89Cec94dF0Aac3a2f539c514a","fromBlock": "0xa","toBlock": "0xe"}],"id":1,"jsonrpc":"2.0"}' 
+    data="{\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\": $fromBlockNum,\"toBlock\": $toBlockNum}],\"id\":1,\"jsonrpc\":\"2.0\"}"
+    run_test_logs $data
+    return $?
+}
+
+test_eth_getLogs_byTopic(){
+    #eth_getLogs
+    data="{\"method\":\"eth_getLogs\",\"params\":[{\"topic\":$topic}],\"id\":1,\"jsonrpc\":\"2.0\"}"
     run_test_logs $data
     return $?
 }

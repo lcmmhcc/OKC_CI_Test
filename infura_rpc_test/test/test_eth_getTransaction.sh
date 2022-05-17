@@ -126,7 +126,6 @@ compare_tx_result(){
 
     echo "success"
     return 0
-
 }
 
 test_eth_getTransactionbyBlockNumberAndIndex(){
