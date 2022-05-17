@@ -1,6 +1,5 @@
 #! /bin/bash
 set +e
-set -x
 
 run_test_logs(){
     data=$1
