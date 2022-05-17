@@ -59,18 +59,18 @@ run_test_Block(){
 
 test_eth_getBlockByNumber(){
     #eth_getLogs
-    data='{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x1",false],"id":1}'
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[$fromBlockNum,false],\"id\":1}"
     run_test_Block $data
 }
 
 test_eth_getBlockByHash(){
     #eth_getLogs
-    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[$fromBlockHash,false],\"id\":1}"
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByHash\",\"params\":[$fromBlockHash,false],\"id\":1}"
     run_test_Block $data
 }
 
 test_eth_getBlockByHash_fulltx(){
     #eth_getLogs
-    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[$fromBlockHash,true],\"id\":1}"
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByHash\",\"params\":[$fromBlockHash,true],\"id\":1}"
     run_test_Block $data
 }
