@@ -52,7 +52,7 @@ run_test_Block(){
         echo "response_block_hash_is_not_equal"
         return 1
     fi
-    
+
     echo "success"
     return 0
 }
@@ -65,12 +65,12 @@ test_eth_getBlockByNumber(){
 
 test_eth_getBlockByHash(){
     #eth_getLogs
-    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[\"0xa84fc124c4209782fa5598b07daf70a1805241fb9a0e3635d13fa49fd74ca01c\",false],\"id\":1}"
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[$fromBlockHash,false],\"id\":1}"
     run_test_Block $data
 }
 
 test_eth_getBlockByHash_fulltx(){
     #eth_getLogs
-    data='{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0xa84fc124c4209782fa5598b07daf70a1805241fb9a0e3635d13fa49fd74ca01c",true],"id":1}'
+    data="{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBlockByNumber\",\"params\":[$fromBlockHash,true],\"id\":1}"
     run_test_Block $data
 }

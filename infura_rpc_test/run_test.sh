@@ -25,15 +25,15 @@ echo_res(){
 
 ./setup.sh
 
-#eth_getLogs
+#eth_getBlock
 err=$(test_eth_getBlockByNumber)
 echo_res "test_eth_getBlockByNumber" $? $err
 
-#err=$(test_eth_getBlockByHash)
-#echo_res "test_eth_getLogs_byBlockHash" $? $err
+err=$(test_eth_getBlockByHash)
+echo_res "test_eth_getLogs_byBlockHash" $? $err
 
-#err=$(test_eth_getBlockByHash_fulltx)
-#echo_res "test_eth_getLogs_byAddress" $? $err
+err=$(test_eth_getBlockByHash_fulltx)
+echo_res "test_eth_getLogs_byAddress" $? $err
 
 
 #eth_getCode
